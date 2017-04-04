@@ -42,10 +42,9 @@
     "tap": "^8.0.1"
   },
   "dependencies": {
-    "fun-assert": "^0.12.0",
-    "fun-compose": "^0.3.0",
-    "fun-predicate": "^0.13.1",
-    "guarded": "^0.5.0",
-    "tap": "^10.3.0"
+    "fun-assert": "latest",
+    "fun-compose": "latest",
+    "fun-predicate": "latest",
+    "guarded": "latest"
   }
 }
