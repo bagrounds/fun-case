@@ -1,6 +1,6 @@
 {
   "name": "fun-case",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A functional switch-case statement (ad hoc polymorphism)",
   "main": "src/index.js",
   "scripts": {
