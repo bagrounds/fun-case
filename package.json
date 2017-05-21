@@ -3,20 +3,23 @@
   "version": "0.1.1",
   "description": "A functional switch-case statement (ad hoc polymorphism)",
   "main": "src/index.js",
+  "browser": "dist/bundle.js",
   "scripts": {
     "pretest": "npm run lint",
     "test": "tap -Rtap --coverage-report=text-summary ./test/index.js",
     "coverage": "tap --coverage-report=lcov ./test/index.js",
     "predependencies": "mkdir -p img",
-    "dependencies": "madge . --image img/dependencies.svg -x 'test|coverage|docs' --include-npm",
+    "dependencies": "madge src --image img/dependencies.svg -x 'public|test|coverage|docs' --include-npm",
     "postdependencies": "npm run dependencies-test",
-    "dependencies-test": "madge . --image img/dependencies-test.svg -x 'coverage|docs' --include-npm",
+    "dependencies-test": "madge . --image img/dependencies-test.svg -x 'dist|public|coverage|docs' --include-npm",
     "pages-index": "showdown makehtml -i README.md -o public/index.html",
     "pages": "./script/pages.sh",
-    "lint": "eslint --ignore-path .gitignore --fix .",
+    "lint": "eslint --ignore-path .gitignore --fix . --ignore-pattern dist",
     "predocument": "rm -rf docs",
     "document": "jsdoc -c .jsdoc.json",
-    "readme": "cat readme/* > README.md"
+    "browserify": "browserify dist/entry.js --no-bf | uglifyjs > dist/bundle.js",
+    "readme": "cat readme/* > README.md",
+    "next-update": "next-update -k true --tldr"
   },
   "repository": {
     "type": "git",
@@ -35,16 +38,22 @@
   },
   "homepage": "https://gitlab.com/bagrounds/fun-case#README",
   "devDependencies": {
-    "eslint": "^3.12.2",
+    "browserify": "^14.3.0",
+    "eslint": "4.0.0-beta.0",
+    "fun-arrange": "^0.1.4",
+    "fun-function": "^0.9.1",
+    "fun-object": "^0.6.3",
+    "fun-test": "^0.24.1",
+    "fun-test-runner": "^0.9.1",
     "jsdoc": "^3.4.3",
     "madge": "^1.6.0",
-    "showdown": "^1.5.4",
-    "tap": "^8.0.1"
+    "next-update": "^1.5.1",
+    "tap": "10.3.2",
+    "uglify-js": "^3.0.10"
   },
   "dependencies": {
-    "fun-assert": "latest",
-    "fun-compose": "latest",
-    "fun-predicate": "latest",
-    "guarded": "latest"
+    "fun-curry": "^0.3.0",
+    "fun-predicate": "^0.16.0",
+    "guarded": "^0.7.3"
   }
 }

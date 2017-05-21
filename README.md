@@ -12,7 +12,7 @@ A functional switch-case statement (ad hoc polymorphism)
 
 ## [Test Coverage](https://bagrounds.gitlab.io/fun-case/coverage/lcov-report/index.html)
 
-## [API Docs](https://bagrounds.gitlab.io/fun-case/docs/index.html)
+## [API Docs](https://bagrounds.gitlab.io/fun-case/index.html)
 
 ## Dependencies
 
