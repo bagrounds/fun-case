@@ -34,6 +34,7 @@
   ]
 
   var functionalityTests = [
+    [[testInput.slice(0, 1), 'string'], predicate.equal('S')],
     [[testInput, 'string'], predicate.equal('S')],
     [[testInput, true], predicate.equal('B')],
     [[testInput, 4], predicate.equal('N')]
