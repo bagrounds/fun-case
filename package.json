@@ -1,6 +1,6 @@
 {
   "name": "fun-case",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "A functional switch-case statement (ad hoc polymorphism)",
   "main": "src/index.js",
   "browser": "dist/bundle.js",
