@@ -1,46 +1,52 @@
-;(function () {
+;(() => {
   'use strict'
 
   /* imports */
-  var arrange = require('fun-arrange')
-  var predicate = require('fun-predicate')
-  var funTest = require('fun-test')
-  var fn = require('fun-function')
-  var object = require('fun-object')
+  const arrange = require('fun-arrange')
+  const { concat, map, append, flatten } = require('fun-array')
+  const { throwsWith, not, t, equalDeep } = require('fun-predicate')
+  const { sync } = require('fun-test')
+  const { compose, k } = require('fun-function')
+  const { ap, of, get, merge } = require('fun-object')
+  const { string, bool, num } = require('fun-type')
+  const { gt } = require('fun-scalar')
 
-  var guardTests = [
-    predicate.throwsWith([3, 3]),
-    predicate.throwsWith([{}, 3]),
-    predicate.throwsWith([[{}], 3]),
-    predicate.throwsWith([[{ p: predicate.t }], 3]),
-    predicate.throwsWith([[{ f: fn.k(1) }], 3]),
-    predicate.not(predicate.throwsWith)([[{ p: predicate.t, f: fn.k(1) }], 3])
-  ].map(object.of('predicate'))
-    .map(object.merge({ inputs: [], contra: fn.k }))
+  const guardTests = map(
+    compose(merge({ contra: compose(k, get('first')) }), of('predicate')),
+    [
+      throwsWith([3, 3]),
+      throwsWith([[[]], 3]),
+      throwsWith([[[t]], 3]),
+      not(throwsWith)([[[t, k(1)]], 3])
+    ]
+  )
 
-  var testInput = [
-    {
-      p: predicate.type('String'),
-      f: fn.k('S')
-    },
-    {
-      p: predicate.type('Boolean'),
-      f: fn.k('B')
-    },
-    {
-      p: predicate.type('Number'),
-      f: fn.k('N')
-    }
-  ]
+  const input1 = [[string, k('S')], [bool, k('B')], [num, k('N')]]
+  const input2 = [[gt(0), gt0 => ({ gt0 })], [gt(10), gt10 => ({ gt10 })]]
 
-  var functionalityTests = [
-    [[testInput.slice(0, 1), 'string'], predicate.equal('S')],
-    [[testInput, 'string'], predicate.equal('S')],
-    [[testInput, true], predicate.equal('B')],
-    [[testInput, 4], predicate.equal('N')]
-  ].map(arrange({ inputs: 0, predicate: 1 }))
+  const functionalityTests = map(
+    compose(
+      ap({ predicate: equalDeep, contra: get }),
+      arrange({ inputs: 0, predicate: 1, contra: 2 })
+    ),
+    flatten([
+      map(append('first'), [
+        [[input1, 'string'], 'S'],
+        [[input1, 'string'], 'S'],
+        [[input1, true], 'B'],
+        [[input1, 4], 'N']
+      ]),
+      map(append('all'), [
+        [[input2, 0], []],
+        [[input2, 1], [{ gt0: 1 }]],
+        [[input2, 5], [{ gt0: 5 }]],
+        [[input2, 11], [{ gt0: 11 }, { gt10: 11 }]],
+        [[input2, 50], [{ gt0: 50 }, { gt10: 50 }]]
+      ])
+    ])
+  )
 
   /* exports */
-  module.exports = functionalityTests.concat(guardTests).map(funTest.sync)
+  module.exports = map(sync, concat(functionalityTests, guardTests))
 })()
 
